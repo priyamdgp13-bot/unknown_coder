@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unknown Coder | Game Arcade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap');
+
+        :root {
+            --primary: #00f2ff;
+            --secondary: #bd00ff;
+            --dark: #0a0a12;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-hover: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* --- Animated Background --- */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0b0c15, #180c1e);
+            overflow: hidden;
+        }
+
+        .cube {
+            position: absolute;
+            top: 80vh;
+            left: 45vw;
+            width: 10px;
+            height: 10px;
+            border: solid 1px var(--primary);
+            transform-origin: top left;
+            transform: scale(0) rotate(0deg) translate(-50%, -50%);
+            animation: cube 12s ease-in forwards infinite;
+        }
+
+        .cube:nth-child(2n) {
+            border-color: var(--secondary);
+        }
+
+        .cube:nth-child(2) { animation-delay: 2s; left: 25vw; top: 40vh; }
+        .cube:nth-child(3) { animation-delay: 4s; left: 75vw; top: 50vh; }
+        .cube:nth-child(4) { animation-delay: 6s; left: 90vw; top: 10vh; }
+        .cube:nth-child(5) { animation-delay: 8s; left: 10vw; top: 85vh; }
+        .cube:nth-child(6) { animation-delay: 10s; left: 50vw; top: 10vh; }
+
+        @keyframes cube {
+            from { transform: scale(0) rotate(0deg) translate(-50%, -50%); opacity: 1; }
+            to { transform: scale(20) rotate(960deg) translate(-50%, -50%); opacity: 0; }
+        }
+
+        /* --- Layout --- */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 40px 20px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 50px;
+        }
+
+        /* --- Grid System --- */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            width: 100%;
+        }
+
+        /* --- Card Styles --- */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: var(--glass-hover);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .card span {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            background: rgba(0,0,0,0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* --- Featured Card (Angul) --- */
+        .card.featured {
+            grid-column: span 2; /* Takes up full width */
+            min-height: 300px;
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.1), rgba(189, 0, 255, 0.1));
+            border: 1px solid rgba(0, 242, 255, 0.3);
+        }
+
+        .card.featured:hover {
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .card.featured h2 {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        /* --- Icons (CSS Shapes) --- */
+        .icon-play {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .game-grid {
+                grid-template-columns: 1fr; /* Stack vertically on mobile */
+            }
+            .card.featured {
+                grid-column: span 1;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Unknown Coder</h1>
+            <p>Select a simulation to begin</p>
+        </header>
+
+        <div class="game-grid">
+            <a href="Angul.html" class="card featured">
+                <div class="icon-play">▶</div>
+                <h2>ANGUL</h2>
+                <span>First Game</span>
+            </a>
+
+            <a href="sayanf.html" class="card">
+                <h2>Player: Sayan</h2>
+                <span>Play Now</span>
+            </a>
+
+            <a href="aritraf.html" class="card">
+                <h2>Player: Aritra</h2>
+                <span>Play Now</span>
+            </a>
+
+            <a href="priyamf.html" class="card">
+                <h2>Player: Priyam</h2>
+                <span>Play Now</span>
+            </a>
+
+            <a href="mahantif.html" class="card">
+                <h2>Player: Mahanti</h2>
+                <span>Play Now</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Simple script to add a tilt effect to cards for that "Premium" feel
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Calculate glow position
+                card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.15), rgba(255,255,255,0.05))`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.background = ''; // Reset background
+            });
+        });
+    </script>
+</body>
+</html>
